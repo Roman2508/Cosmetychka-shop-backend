@@ -57,7 +57,7 @@ export default buildConfig({
         media: {
           disableLocalStorage: true,
           generateFileURL: ({ filename }) =>
-            `${process.env.R2_ENDPOINT}/${process.env.R2_BUCKET}/${filename}`,
+            `${process.env.CLOUDFLARE_PUBLIC_BUCKET_URL}/${filename}`,
         },
       },
       bucket: process.env.R2_BUCKET || '',
