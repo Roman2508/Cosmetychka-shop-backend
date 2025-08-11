@@ -56,6 +56,8 @@ export default buildConfig({
       collections: {
         media: {
           disableLocalStorage: true,
+          generateFileURL: ({ filename }) =>
+            `${process.env.R2_ENDPOINT}/${process.env.R2_BUCKET}/${filename}`,
         },
       },
       bucket: process.env.R2_BUCKET || '',
