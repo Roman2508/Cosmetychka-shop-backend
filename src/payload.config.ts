@@ -16,6 +16,10 @@ import { Products } from './collections/Products'
 import { Categories } from './collections/Categories'
 import { Subcategories } from './collections/Subategories'
 
+import { en } from '@payloadcms/translations/languages/en'
+import { uk } from '@payloadcms/translations/languages/uk'
+import { ru } from '@payloadcms/translations/languages/ru'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -72,4 +76,10 @@ export default buildConfig({
       },
     }),
   ],
+  i18n: {
+    fallbackLanguage: 'uk',
+    // @ts-ignore
+    supportedLanguages: { en, uk, ru },
+    translations: { ru, uk, en },
+  },
 })
