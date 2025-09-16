@@ -4,7 +4,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   labels: {
     singular: 'Користувачі',
-    plural: 'Користувач',
+    plural: 'Користувачі',
   },
   admin: {
     useAsTitle: 'email',
