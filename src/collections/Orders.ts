@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
+  labels: {
+    singular: 'Замовлення',
+    plural: 'Замовлення',
+  },
   access: {
     read: () => true,
     create: () => true,
