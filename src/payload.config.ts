@@ -51,9 +51,10 @@ export default buildConfig({
       port: parseInt(process.env.DATABASE_PORT || '5432', 10),
       user: process.env.DATABASE_USER || '',
       password: process.env.DATABASE_PASSWORD || '',
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      // ssl: {
+      //   rejectUnauthorized: false,
+      // },
+      ssl: false,
     },
   }),
   sharp,
