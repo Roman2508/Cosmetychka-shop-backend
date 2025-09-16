@@ -166,7 +166,6 @@ export interface Product {
 export interface Subcategory {
   id: number;
   name: string;
-  products?: (number | null) | Product;
   updatedAt: string;
   createdAt: string;
 }
@@ -178,7 +177,6 @@ export interface Brand {
   id: number;
   name: string;
   subcategory: (number | Subcategory)[];
-  products?: (number | null) | Product;
   updatedAt: string;
   createdAt: string;
 }
@@ -387,7 +385,6 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface SubcategoriesSelect<T extends boolean = true> {
   name?: T;
-  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -398,7 +395,6 @@ export interface SubcategoriesSelect<T extends boolean = true> {
 export interface BrandsSelect<T extends boolean = true> {
   name?: T;
   subcategory?: T;
-  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }

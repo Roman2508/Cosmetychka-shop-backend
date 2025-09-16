@@ -25,12 +25,12 @@ export const Brands: CollectionConfig = {
       hasMany: true,
       required: true,
     },
-    {
-      name: 'products',
-      label: 'Товари',
-      type: 'relationship',
-      relationTo: 'products',
-    },
+    // {
+    //   name: 'products',
+    //   label: 'Товари',
+    //   type: 'relationship',
+    //   relationTo: 'products',
+    // },
   ],
   admin: {
     useAsTitle: 'name',
