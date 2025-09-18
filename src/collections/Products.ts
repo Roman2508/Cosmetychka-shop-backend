@@ -114,6 +114,14 @@ export const Products: CollectionConfig = {
     },
 
     {
+      name: 'finalPrice',
+      label: 'Фінальна ціна (з урахуванням знижки)',
+      type: 'number',
+      required: true,
+      admin: { readOnly: true },
+    },
+
+    {
       name: 'tags',
       label: 'Мітки',
       type: 'select',
@@ -160,6 +168,28 @@ export const Products: CollectionConfig = {
       ],
     },
   ],
+
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (!data) return data
+
+        let finalPrice = data.price
+
+        if (data.hasDiscount && data.discount) {
+          if (data.discount.type === 'fixed') {
+            finalPrice = Math.max(0, data.price - data.discount.value)
+          }
+          if (data.discount.type === 'percent') {
+            finalPrice = Math.max(0, data.price - (data.price * data.discount.value) / 100)
+          }
+        }
+
+        data.finalPrice = finalPrice
+        return data
+      },
+    ],
+  },
 
   admin: {
     useAsTitle: 'name',

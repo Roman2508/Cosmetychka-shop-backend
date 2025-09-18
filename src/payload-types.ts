@@ -141,6 +141,7 @@ export interface Product {
     type: 'fixed' | 'percent';
     value: number;
   };
+  finalPrice: number;
   tags?: ('hit' | 'new' | 'top')[] | null;
   specs?:
     | {
@@ -351,6 +352,7 @@ export interface ProductsSelect<T extends boolean = true> {
         type?: T;
         value?: T;
       };
+  finalPrice?: T;
   tags?: T;
   specs?:
     | T
