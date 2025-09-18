@@ -1,9 +1,7 @@
-// storage-adapter-import-placeholder
 import path from 'path'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
-import { s3Storage } from '@payloadcms/storage-s3'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
@@ -26,11 +24,6 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   serverURL: process.env.SERVER_URL,
   cors: process.env.CORS_URLS ? process.env.CORS_URLS.split(',') : [],
-  // cors: [
-  //   process.env.FRONTEND_URL || 'http://localhost:3000',
-  //   process.env.SERVER_URL || 'http://localhost:7777/api',
-  // ],
-
   admin: {
     user: Users.slug,
     importMap: {
@@ -43,9 +36,13 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  upload: {
+    limits: {
+      fileSize: 5000000, // 5MB, written in bytes
+    },
+  },
   db: postgresAdapter({
     pool: {
-      // connectionString: process.env.DATABASE_URI || '',
       database: process.env.DATABASE_NAME || '',
       host: process.env.DATABASE_HOST || '',
       port: parseInt(process.env.DATABASE_PORT || '5432', 10),
@@ -58,29 +55,7 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [
-    payloadCloudPlugin(),
-
-    s3Storage({
-      collections: {
-        media: {
-          disableLocalStorage: true,
-          generateFileURL: ({ filename }) =>
-            `${process.env.CLOUDFLARE_PUBLIC_BUCKET_URL}/${filename}`,
-        },
-      },
-      bucket: process.env.R2_BUCKET || '',
-      config: {
-        endpoint: process.env.R2_ENDPOINT || '',
-        credentials: {
-          accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
-        },
-        region: 'auto',
-        forcePathStyle: true,
-      },
-    }),
-  ],
+  plugins: [payloadCloudPlugin()],
   i18n: {
     fallbackLanguage: 'uk',
     // @ts-ignore
