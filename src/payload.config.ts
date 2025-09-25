@@ -55,9 +55,7 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [
-    payloadCloudPlugin()
-  ],
+  plugins: [payloadCloudPlugin()],
   i18n: {
     fallbackLanguage: 'uk',
     // @ts-ignore
