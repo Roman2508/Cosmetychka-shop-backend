@@ -10,22 +10,34 @@ services:
       - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+    depends_on:
+      # - mongo
+      - postgres
     env_file:
       - .env
 
-  minio:
-    image: minio/minio:latest
-    container_name: minio
-    restart: unless-stopped
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    ports:
-      - "9000:9000"   # S3 API
-      - "9090:9090"   # Web UI
-    command: server /data --console-address ":9090"
+  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
+  # mongo:
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   command:
+  #     - --storageEngine=wiredTiger
+  #   volumes:
+  #     - data:/data/db
+  #   logging:
+  #     driver: none
+
+  # Uncomment the following to use postgres
+  postgres:
+    restart: always
+    image: postgres:latest
     volumes:
-      - ./minio-data:/data
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
 volumes:
+  # data:
+  pgdata:
   node_modules:

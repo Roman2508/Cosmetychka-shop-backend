@@ -1,3 +1,4 @@
+import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
@@ -55,7 +56,28 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [payloadCloudPlugin()],
+  plugins: [
+    payloadCloudPlugin(),
+    s3Storage({
+      collections: {
+        media: {
+          disableLocalStorage: true,
+          generateFileURL: ({ filename }) =>
+            `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${filename}`,
+        },
+      },
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        endpoint: process.env.S3_ENDPOINT || '',
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: 'auto',
+        forcePathStyle: true,
+      },
+    }),
+  ],
   i18n: {
     fallbackLanguage: 'uk',
     // @ts-ignore
