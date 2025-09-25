@@ -12,7 +12,7 @@ const Media: CollectionConfig = {
   },
   upload: {
     // staticDir: 'media',
-    staticDir: path.resolve(__dirname, '../media'),
+    staticDir: path.resolve(process.cwd(), 'media'),
     mimeTypes: ['image/*'],
   },
   fields: [
