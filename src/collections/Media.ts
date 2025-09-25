@@ -1,4 +1,4 @@
-import path from 'path'
+// import path from 'path'
 import type { CollectionConfig } from 'payload'
 
 const Media: CollectionConfig = {
@@ -11,8 +11,8 @@ const Media: CollectionConfig = {
     read: () => true,
   },
   upload: {
-    // staticDir: 'media',
-    staticDir: path.resolve(process.cwd(), 'media'),
+    staticDir: 'media',
+    // staticDir: path.resolve(process.cwd(), 'media'),
     mimeTypes: ['image/*'],
   },
   fields: [
