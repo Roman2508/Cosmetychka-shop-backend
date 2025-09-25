@@ -25,8 +25,23 @@ export const Products: CollectionConfig = {
     {
       name: 'description',
       label: 'Опис товару',
-      type: 'textarea',
+      type: 'richText',
       required: true,
+
+      // admin: {
+      // elements: [
+      //   'h1', 'h2', 'h3',
+      //   'blockquote',
+      //   'link',
+      //   'ol', 'ul',
+      // ],
+      // leaves: [
+      //   'bold',
+      //   'italic',
+      //   'underline',
+      //   'strikethrough',
+      // ],
+      // },
     },
 
     {

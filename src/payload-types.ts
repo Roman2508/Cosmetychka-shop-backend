@@ -130,7 +130,21 @@ export interface UserAuthOperations {
 export interface Product {
   id: number;
   name: string;
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   price: number;
   subcategories: number | Subcategory;
   brand: number | Brand;
