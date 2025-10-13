@@ -156,6 +156,12 @@ export interface Product {
     value: number;
   };
   finalPrice: number;
+  hasVariations?: boolean | null;
+  variantInfo?: {
+    variantName: string;
+    color: string;
+    relatedProducts?: (number | Product)[] | null;
+  };
   tags?: ('hit' | 'new' | 'top')[] | null;
   specs?:
     | {
@@ -367,6 +373,14 @@ export interface ProductsSelect<T extends boolean = true> {
         value?: T;
       };
   finalPrice?: T;
+  hasVariations?: T;
+  variantInfo?:
+    | T
+    | {
+        variantName?: T;
+        color?: T;
+        relatedProducts?: T;
+      };
   tags?: T;
   specs?:
     | T

@@ -1,3 +1,5 @@
+import ColorPickerField from '@/components/color-picker-field'
+import { Product } from '@/payload-types'
 import type { CollectionConfig } from 'payload'
 
 export const Products: CollectionConfig = {
@@ -137,6 +139,47 @@ export const Products: CollectionConfig = {
     },
 
     {
+      name: 'hasVariations',
+      label: 'Товар має варіації',
+      type: 'checkbox',
+    },
+
+    {
+      name: 'variantInfo',
+      label: 'Інформація про варіацію',
+      type: 'group',
+      admin: {
+        condition: (_, siblingData) => siblingData.hasVariations === true,
+      },
+      fields: [
+        {
+          name: 'variantName',
+          label: 'Назва кольору або варіації',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'color',
+          label: 'Відтінок',
+          type: 'text',
+          required: true,
+          admin: {
+            components: {
+              Field: ColorPickerField,
+            },
+          },
+        },
+        {
+          name: 'relatedProducts',
+          label: 'Повʼязані товари (інші варіації цієї ж моделі)',
+          type: 'relationship',
+          relationTo: 'products',
+          hasMany: true,
+        },
+      ],
+    },
+
+    {
       name: 'tags',
       label: 'Мітки',
       type: 'select',
@@ -181,6 +224,51 @@ export const Products: CollectionConfig = {
         },
         { name: 'caption', type: 'text' },
       ],
+    },
+  ],
+
+  endpoints: [
+    {
+      path: '/:id/full',
+      method: 'get',
+      handler: async (req) => {
+        if (!req?.routeParams?.id) {
+          return Response.json({ error: 'Missing product ID' }, { status: 400 })
+        }
+
+        const product = await req.payload.findByID({
+          collection: 'products',
+          id: req.routeParams.id as string,
+          req,
+        })
+
+        if (!product) {
+          return Response.json({ error: 'Product not found' }, { status: 404 })
+        }
+
+        if (product.hasVariations && Array.isArray(product.variantInfo?.relatedProducts)) {
+          const subReq = { ...(req as any), skipRelatedProducts: true } as any
+
+          // @ts-ignore
+          product.variantInfo.relatedProducts = await Promise.all(
+            (product.variantInfo.relatedProducts ?? []).map(async (item: any) => {
+              const prodId = typeof item === 'string' ? item : item.id
+              const relatedProduct = await req.payload.findByID({
+                collection: 'products',
+                id: prodId,
+                req: subReq,
+              })
+              return {
+                id: prodId,
+                hasVariations: relatedProduct.hasVariations,
+                variantInfo: relatedProduct.variantInfo,
+              }
+            }),
+          )
+        }
+
+        return Response.json(product)
+      },
     },
   ],
 

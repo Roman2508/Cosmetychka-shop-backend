@@ -17,12 +17,6 @@ export const Subcategories: CollectionConfig = {
       required: true,
       unique: true,
     },
-    // {
-    //   name: 'products',
-    //   label: 'Товари',
-    //   type: 'relationship',
-    //   relationTo: 'products',
-    // },
   ],
   admin: {
     useAsTitle: 'name',
