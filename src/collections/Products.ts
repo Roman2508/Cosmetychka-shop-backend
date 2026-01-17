@@ -296,7 +296,8 @@ export const Products: CollectionConfig = {
     afterRead: [
       async ({ doc }) => {
         if (doc.description) {
-          doc.description = convertLexicalToHTML({ data: doc.description })
+          // doc.description = doc.description
+          doc.descriptionHtml = convertLexicalToHTML({ data: doc.description })
         }
         return doc
       },
