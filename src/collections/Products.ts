@@ -1,6 +1,7 @@
-import ColorPickerField from '@/components/color-picker-field'
 import { Product } from '@/payload-types'
 import type { CollectionConfig } from 'payload'
+import ColorPickerField from '@/components/color-picker-field'
+import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -290,6 +291,14 @@ export const Products: CollectionConfig = {
 
         data.finalPrice = finalPrice
         return data
+      },
+    ],
+    afterRead: [
+      async ({ doc }) => {
+        if (doc.description) {
+          doc.description = convertLexicalToHTML({ data: doc.description })
+        }
+        return doc
       },
     ],
   },
